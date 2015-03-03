@@ -10,11 +10,12 @@
 #include <stdlib.h>
 
 
-unsigned char buffer [100000];
-unsigned char bytemask=0;
+ char buffer [100000];
+
 //test
 unsigned char testbuffer [8];
 //test
+
 typedef struct node{
     int processID;
     int startTime;
@@ -24,20 +25,40 @@ typedef struct node{
     struct node *next;
 }Node;
 
-typedef struct lognode{
+typedef struct log_node{
     int processID;
     int startTime;
-};
+    struct log_node *next;
+}Log_node;
+
+typedef struct remove_node{
+    int processID;
+    int startAd;
+    int endAd;
+    int entTime;
+    struct remove_node *next;
+}Remove_node;
+
 typedef struct queue{
     struct node *head;
     struct node *tail;
 }Queue;
 
+
+typedef struct log_queue{
+    struct log_node *head;
+    struct log_node *tail;
+}Log_queue;
+
+typedef struct remove_queue{
+    struct remove_node *head;
+    struct remove_node *tail;
+}Remove_queue;
 char tmp[50];
 FILE *fp;
 
 void printBufferStatus (void);
-
+void initBufferStatus(void);
 int main(int argc, const char * argv[])
 {
     char tmp[50];
@@ -48,7 +69,16 @@ int main(int argc, const char * argv[])
     q.head=NULL;
     q.tail=NULL;
     
+    Remove_queue removeq;
+    removeq.head=NULL;
+    removeq.tail=NULL;
+    
+    Log_queue logq;
+    logq.head=NULL;
+    logq.tail=NULL;
+    
     Node *ptr;
+    Log_node *ptrLog;
     
     FILE *fp;
     
@@ -64,6 +94,9 @@ int main(int argc, const char * argv[])
     
     //End Read
     
+    //init buffer
+    initBufferStatus();
+    //
     //Read file to Queue
     
     while (fgets(tmp, 50, fp) != NULL) {
@@ -131,19 +164,34 @@ int main(int argc, const char * argv[])
     //Test end
     
     //First-Allocation Algo
-    
     Queue firstQ;
+    
     for (t=0; t<=globalEndTime; t++) {
-        //
-        
-        
-        while (ptr->startTime==t) { //once startTime==currentTime, than handle this process
-            
+        //Delete area
+        //end Delete
+        printf("\n%d\n",ptr->startTime);
+        /*
+        while (ptr->startTime==t) { //Once startTime==currentTime, than handle this process
             //process
+                //allocate a new node for log
+                Log_node *newLog_node;
+                newLog_node=(Log_node*)malloc(sizeof(Log_node));
                 
+                newLog_node->processID=ptr->processID;
+                newLog_node->startTime=ptr->startTime;
+            
+                if (logq.head == NULL) { //First Node
+                    logq.head=newLog_node;
+                    logq.tail=newLog_node;
+                }else{
+                    logq.tail->next=newLog_node;
+                    logq.tail=newLog_node;
+                }
+            
             
             ptr=ptr->next;
         }
+         */
     }
     
     //End First
@@ -156,18 +204,29 @@ int main(int argc, const char * argv[])
     
     //End Worst
     
+    
+    //printfBuffer
+    
+
+    printBufferStatus();
+    
+    //end printfBuffer
+    
     fclose(fp);
     return 0;
 }
-/*
+
 void printBufferStatus(void){
     int i;
-    unsigned char mask = 0x80;
-    printf("printf test mask:");
-    for (i = 0; i< 8; i++)
+    for (i = 0; i< 100000; i++)
     {
-        printf ("%d ", (byte_16_buf_mask&mask) >> (7-i));
-        mask = mask >> 1;
+        printf("%c ",buffer[i]);
     }
+
 }
-*/
+void initBufferStatus(void){
+    int i;
+    for (i=0; i<100000; i++) {
+        buffer[i]='0';
+    }
+};
