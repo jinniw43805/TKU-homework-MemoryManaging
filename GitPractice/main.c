@@ -14,14 +14,23 @@
 #define MEM_LIMIT 500
 #define TIME_OFFSET 10
 
+unsigned char buffer [100000];
+//test
+unsigned char testbuffer [10];
+//test
 typedef struct node{
     int processID;
     int startTime;
     int processTime;
     int alloSpace;
+    int endTime;
     struct node *next;
 }Node;
 
+typedef struct lognode{
+    int processID;
+    int startTime;
+};
 typedef struct queue{
     struct node *head;
     struct node *tail;
@@ -44,7 +53,7 @@ int main(int argc, const char * argv[])
     
     FILE *fp;
     
-    int i;
+    int i,t,globalEndTime=0;
     
     //Read file
     
@@ -78,6 +87,13 @@ int main(int argc, const char * argv[])
         parseTmpString=strtok(NULL, " ");
         newnode->alloSpace=atoi(parseTmpString);
         
+        newnode->endTime=(newnode->processTime)+(newnode->startTime);
+        
+        //Calculate when system stop
+        if (newnode->endTime > globalEndTime) {
+            globalEndTime=newnode->endTime;
+        }
+        //End calculate
      //   printf("%d %d %d %d",newnode->processID,newnode->startAd,newnode->processTime,newnode->alloSpace);
         
         //為第一個節點
@@ -107,17 +123,25 @@ int main(int argc, const char * argv[])
     printf("processID startTime processTime alloSpace\n");
     ptr=q.head;
     while (ptr!=NULL) {
-           printf("%d %d %d %d",ptr->processID,ptr->startTime,ptr->processTime,ptr->alloSpace);
+           printf("%d %d %d %d %d",ptr->processID,ptr->startTime,ptr->processTime,ptr->alloSpace,ptr->endTime);
         printf("\n");
         ptr=ptr->next;
     }
+    printf("System end time: %d \n",globalEndTime);
+    ptr=q.head;
     //Test end
     
     //First-Allocation Algo
-    for (i=0; i<=1000; i++) {
+    /*
+    Queue firstQ;
+    for (t=0; t<=globalEndTime; t++) {
         
+        while (ptr->startTime==t) { //once startTime==currentTime, than handle this process
+            
+            ptr=ptr->next;
+        }
     }
-    
+    */
     //End First
     
     //Best-Allocation Algo
