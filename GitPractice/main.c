@@ -9,14 +9,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define COUNT 10000
-#define TIME_LIMIT 1000
-#define MEM_LIMIT 500
-#define TIME_OFFSET 10
 
 unsigned char buffer [100000];
+unsigned char bytemask=0;
 //test
-unsigned char testbuffer [10];
+unsigned char testbuffer [8];
 //test
 typedef struct node{
     int processID;
@@ -38,6 +35,8 @@ typedef struct queue{
 
 char tmp[50];
 FILE *fp;
+
+void printBufferStatus (void);
 
 int main(int argc, const char * argv[])
 {
@@ -132,16 +131,21 @@ int main(int argc, const char * argv[])
     //Test end
     
     //First-Allocation Algo
-    /*
+    
     Queue firstQ;
     for (t=0; t<=globalEndTime; t++) {
+        //
+        
         
         while (ptr->startTime==t) { //once startTime==currentTime, than handle this process
+            
+            //process
+                
             
             ptr=ptr->next;
         }
     }
-    */
+    
     //End First
     
     //Best-Allocation Algo
@@ -155,4 +159,15 @@ int main(int argc, const char * argv[])
     fclose(fp);
     return 0;
 }
-
+/*
+void printBufferStatus(void){
+    int i;
+    unsigned char mask = 0x80;
+    printf("printf test mask:");
+    for (i = 0; i< 8; i++)
+    {
+        printf ("%d ", (byte_16_buf_mask&mask) >> (7-i));
+        mask = mask >> 1;
+    }
+}
+*/
