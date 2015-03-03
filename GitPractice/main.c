@@ -8,35 +8,125 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 #define COUNT 10000
 #define TIME_LIMIT 1000
 #define MEM_LIMIT 500
 #define TIME_OFFSET 10
 
+typedef struct node{
+    int processID;
+    int startTime;
+    int processTime;
+    int alloSpace;
+    struct node *next;
+}Node;
+
+typedef struct queue{
+    struct node *head;
+    struct node *tail;
+}Queue;
+
+char tmp[50];
+FILE *fp;
+
 int main(int argc, const char * argv[])
 {
+    char tmp[50];
+    char *tok=" ";
+    char *parseTmpString;
+    
+    Queue q;
+    q.head=NULL;
+    q.tail=NULL;
+    
+    Node *ptr;
+    
     FILE *fp;
-    int cur_time=2, i;
-    int p_id = 1000;
     
+    int i;
     
-    srand((int)time(NULL));
-    fp = fopen("input.txt", "w");
+    //Read file
     
-    for (i=0; i< COUNT; i++)
-    {
-        fprintf(fp, "%d ", p_id);
-        p_id++;
+    fp = fopen("input.txt", "r");
+    if (!fp) {
+        printf("File open failed\n");
+        exit(1);
+    }
+    
+    //End Read
+    
+    //Read file to Queue
+    
+    while (fgets(tmp, 50, fp) != NULL) {
+        // If read a new line , than allocation a new node
+        Node *newnode;
+        newnode=(Node*)malloc(sizeof(Node));
+        //
         
-        fprintf(fp, "%d ", cur_time);
-        cur_time = cur_time + 1+ (rand()%TIME_OFFSET);
         
-        fprintf(fp, "%d ", 1+ (rand()%TIME_LIMIT));
-        fprintf(fp, "%d\n", 1+ (rand()%MEM_LIMIT));
+        parseTmpString=strtok(tmp," ");
+        newnode->processID=atoi(parseTmpString);
+        
+        parseTmpString=strtok(NULL, " ");
+        newnode->startTime=atoi(parseTmpString);
+        
+        
+        parseTmpString=strtok(NULL, " ");
+        newnode->processTime=atoi(parseTmpString);
+        
+        parseTmpString=strtok(NULL, " ");
+        newnode->alloSpace=atoi(parseTmpString);
+        
+     //   printf("%d %d %d %d",newnode->processID,newnode->startAd,newnode->processTime,newnode->alloSpace);
+        
+        //為第一個節點
+        if (q.head == NULL) {
+            q.head=newnode;
+            q.tail=newnode;
+        }else{//為最後一個節點
+            if(q.tail==NULL){
+                q.tail->next=newnode;
+                newnode->next=NULL;
+            }else{
+                q.tail->next=newnode;
+                q.tail=newnode;
+            }
+        }
+        
+        
+        printf("\n");
         
     }
+    
+    
+    //End read
+
+    
+    //Test read whether success
+    printf("processID startTime processTime alloSpace\n");
+    ptr=q.head;
+    while (ptr!=NULL) {
+           printf("%d %d %d %d",ptr->processID,ptr->startTime,ptr->processTime,ptr->alloSpace);
+        printf("\n");
+        ptr=ptr->next;
+    }
+    //Test end
+    
+    //First-Allocation Algo
+    for (i=0; i<=1000; i++) {
+        
+    }
+    
+    //End First
+    
+    //Best-Allocation Algo
+    
+    //End Best
+    
+    //Worst-Allocation Algo
+    
+    //End Worst
     
     fclose(fp);
     return 0;
