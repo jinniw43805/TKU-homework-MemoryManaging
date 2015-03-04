@@ -12,10 +12,6 @@
 
  char buffer [100000];
 
-//test
-unsigned char testbuffer [8];
-//test
-
 typedef struct node{
     int processID;
     int startTime;
