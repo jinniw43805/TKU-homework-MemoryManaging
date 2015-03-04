@@ -133,13 +133,9 @@ int main(int argc, const char * argv[])
             q.head=newnode;
             q.tail=newnode;
         }else{//為最後一個節點
-            if(q.tail==NULL){
-                q.tail->next=newnode;
-                newnode->next=NULL;
-            }else{
-                q.tail->next=newnode;
-                q.tail=newnode;
-            }
+            q.tail->next=newnode;
+            q.tail=newnode;
+            q.tail->next=NULL;
         }
         
         
@@ -152,47 +148,25 @@ int main(int argc, const char * argv[])
 
     
     //Test read whether success
-    printf("processID startTime processTime alloSpace\n");
+    printf("processID startTime processTime alloSpace endTime\n");
     ptr=q.head;
+    int count=0;
     while (ptr!=NULL) {
+       
            printf("%d %d %d %d %d",ptr->processID,ptr->startTime,ptr->processTime,ptr->alloSpace,ptr->endTime);
         printf("\n");
         ptr=ptr->next;
     }
     printf("System end time: %d \n",globalEndTime);
+    
     ptr=q.head;
     //Test end
     
     //First-Allocation Algo
     Queue firstQ;
+    printf("\n%d\n",ptr->startTime);
     
-    for (t=0; t<=globalEndTime; t++) {
-        //Delete area
-        //end Delete
-        printf("\n%d\n",ptr->startTime);
-        /*
-        while (ptr->startTime==t) { //Once startTime==currentTime, than handle this process
-            //process
-                //allocate a new node for log
-                Log_node *newLog_node;
-                newLog_node=(Log_node*)malloc(sizeof(Log_node));
-                
-                newLog_node->processID=ptr->processID;
-                newLog_node->startTime=ptr->startTime;
-            
-                if (logq.head == NULL) { //First Node
-                    logq.head=newLog_node;
-                    logq.tail=newLog_node;
-                }else{
-                    logq.tail->next=newLog_node;
-                    logq.tail=newLog_node;
-                }
-            
-            
-            ptr=ptr->next;
-        }
-         */
-    }
+    
     
     //End First
     
@@ -208,7 +182,7 @@ int main(int argc, const char * argv[])
     //printfBuffer
     
 
-    printBufferStatus();
+   // printBufferStatus();
     
     //end printfBuffer
     
