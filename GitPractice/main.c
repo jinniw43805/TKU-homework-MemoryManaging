@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 
 char buffer [100000];
 
@@ -165,8 +165,6 @@ int main(int argc, const char * argv[])
     
     //First-Allocation Algo
     Queue firstQ;
-    printf("\n%d\n",ptr->startTime);
-    
     
     
     //End First
