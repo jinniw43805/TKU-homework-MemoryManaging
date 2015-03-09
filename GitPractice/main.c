@@ -51,6 +51,7 @@ FILE *fp;
 void printBufferStatus (void);
 void initBufferStatus(void);
 void enSchedule_queue(Queue *queue,Schedule_queue *Scheq);
+void process_schedule_queue(Schedule_queue *Scheq);
 int main(int argc, const char * argv[])
 {
     char tmp[50];
@@ -70,7 +71,7 @@ int main(int argc, const char * argv[])
     Node *ptr;
     FILE *fp;
     
-    int i,t,globalEndTime=0;
+    int i,t;
     
     //Read file
     
@@ -110,9 +111,6 @@ int main(int argc, const char * argv[])
         newnode->endTime=(newnode->processTime)+(newnode->startTime);
         
         //Calculate when system stop
-        if (newnode->endTime > globalEndTime) {
-            globalEndTime=newnode->endTime;
-        }
         //End calculate
         //   printf("%d %d %d %d",newnode->processID,newnode->startAd,newnode->processTime,newnode->alloSpace);
         
@@ -127,10 +125,7 @@ int main(int argc, const char * argv[])
         }
         
         
-        printf("\n");
-        
     }
-    
     
     //End read
     
@@ -149,17 +144,16 @@ int main(int argc, const char * argv[])
         ptrSchedule=ptrSchedule->next;
     }
     //Test read whether success
-    //    printf("processID startTime processTime alloSpace endTime\n");
-    //    ptr=q.head;
-    //    int count=0;
-    //    while (ptr!=NULL) {
-    //
-    //           printf("%d %d %d %d %d",ptr->processID,ptr->startTime,ptr->processTime,ptr->alloSpace,ptr->endTime);
-    //        printf("\n");
-    //        ptr=ptr->next;
-    //    }
-    //    printf("System end time: %d \n",globalEndTime);
-    //
+        printf("processID startTime processTime alloSpace endTime\n");
+        ptr=q->head;
+        int count=0;
+        while (ptr!=NULL) {
+    
+               printf("%d %d %d %d %d",ptr->processID,ptr->startTime,ptr->processTime,ptr->alloSpace,ptr->endTime);
+            printf("\n");
+            ptr=ptr->next;
+        }
+
     ptr=q->head;
     //Test end
     
@@ -267,7 +261,9 @@ void enSchedule_queue(Queue *queue,Schedule_queue *Scheq){
         ptr=ptr->next;
     }
 }
-
+void process_schedule_queue(Schedule_queue *Scheq){
+    Schedule_node *ptrSchedule;
+}
 void printBufferStatus(void){
     int i;
     for (i = 0; i< 100000; i++)
